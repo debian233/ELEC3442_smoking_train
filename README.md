@@ -112,3 +112,9 @@ The script:
 import torch
 print(torch.backends.mps.is_available())  # Should be True
 ```
+
+**`OSError: No space left on device` (Pi only)**
+→ Don't install CUDA PyTorch on Pi — use CPU-only:
+```bash
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+```
