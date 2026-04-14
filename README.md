@@ -66,7 +66,7 @@ After 50 epochs on the full dataset:
 ```python
 from ultralytics import YOLO
 model = YOLO("runs/detect/train/weights/best.pt")
-model.export(format="ncnn", imgsz=320)
+model.export(format="ncnn")
 ```
 
 ### Transfer to Raspberry Pi
@@ -80,15 +80,14 @@ scp -r runs/detect/train/weights/best_ncnn_model pi@<PI_IP>:~/smoking-detection/
 See the parent project's `detect_local.py`:
 
 ```bash
-python3 detect_local.py --model best_ncnn_model --imgsz 320
+python3 detect_local.py --model best_ncnn_model
 ```
 
 ## Tips for Faster Training
 
-1. **Reduce `imgsz` to 320** — 2x faster, minimal accuracy loss for this task
-2. **Use `cache="ram"`** — eliminates disk I/O bottleneck
-3. **Increase `batch` size** — set `batch=-1` for auto-max
-4. **Freeze backbone** — add `freeze=10` to only train detection head
+1. **Use `cache="ram"`** — eliminates disk I/O bottleneck
+2. **Increase `batch` size** — set `batch=-1` for auto-max
+3. **Freeze backbone** — add `freeze=10` to only train detection head
 
 ## Troubleshooting
 
