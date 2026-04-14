@@ -15,6 +15,7 @@ Train a YOLO26n model on the [Roboflow smoking-tasfx dataset](https://universe.r
 |---|---|
 | `download_dataset.py` | Download dataset from Roboflow |
 | `train_mac.py` | Train on Mac (Apple Silicon, MPS) |
+| `train_colab.ipynb` | Train on Google Colab (free T4 GPU) |
 | `detect_pi.py` | Live detection on Raspberry Pi 5 |
 | `requirements.txt` | Python dependencies |
 
