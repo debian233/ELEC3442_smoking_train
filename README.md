@@ -15,6 +15,7 @@ Train a YOLO26n model on the [Roboflow smoking-tasfx dataset](https://universe.r
 |---|---|
 | `download_dataset.py` | Download dataset from Roboflow |
 | `train_mac.py` | Train on Mac (Apple Silicon, MPS) |
+| `detect_pi.py` | Live detection on Raspberry Pi 5 |
 | `requirements.txt` | Python dependencies |
 
 ## Quick Start
@@ -77,11 +78,21 @@ scp -r runs/detect/train/weights/best_ncnn_model pi@<PI_IP>:~/smoking-detection/
 
 ### Run inference on Pi
 
-See the parent project's `detect_local.py`:
-
 ```bash
-python3 detect_local.py --model best_ncnn_model
+# Using PyTorch weights
+python3 detect_pi.py --model best.pt
+
+# Or using NCNN (faster on Pi 5 ARM)
+python3 detect_pi.py --model best_ncnn_model
 ```
+
+Then open in browser: `http://<PI_IP>:8888`
+
+The script:
+- Captures frames from a USB webcam or Pi Camera
+- Runs YOLO inference
+- Serves annotated video as an MJPEG stream (no GUI required)
+- Runs a threaded camera capture for better FPS
 
 ## Tips for Faster Training
 
