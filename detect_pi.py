@@ -15,9 +15,15 @@ import argparse
 import threading
 import time
 import cv2
+import os
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from ultralytics import YOLO
+
+
+# Create a folder for images if it doesn't exist
+if not os.path.exists('detections'):
+    os.makedirs('detections')
 
 # Shared frame for streaming
 latest_frame = None
@@ -181,16 +187,22 @@ def main():
             frame_count += 1
             boxes = results[0].boxes
             if len(boxes) > 0:
+                # BACKEND LOGIC implemented here. 
                 detection_count += 1
                 for box in boxes:
                     cls_id = int(box.cls[0])
                     conf = float(box.conf[0])
                     cls_name = model.names[cls_id]
+
+                    # Store the data into SQLite database
+                    # You can use the 'sqlite3' library to connect and insert data into your database
+
                     print(f"[Frame {frame_count}] {cls_name} ({conf:.0%}) | {fps:.1f} FPS")
 
                 if args.save:
                     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    filename = f"detection_{ts}_{frame_count}.jpg"
+                    # Save inside the 'detections' folder
+                    filename = f"detections/smoker_{ts}_{frame_count}.jpg"
                     cv2.imwrite(filename, annotated)
                     print(f"  -> Saved: {filename}")
             else:
