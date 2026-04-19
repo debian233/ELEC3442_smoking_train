@@ -19,7 +19,8 @@ import os
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from ultralytics import YOLO
-
+# 1. At the top, import the module
+from db import init_db, insert_detection
 
 # Create a folder for images if it doesn't exist
 if not os.path.exists('detections'):
@@ -118,7 +119,7 @@ def main():
     print(f"[INFO] Loading model: {args.model}")
     model = YOLO(args.model)
     print(f"[INFO] Model loaded. Classes: {model.names}")
-
+    init_db()
     # Open camera
     print(f"[INFO] Opening camera {args.source}...")
     cap = cv2.VideoCapture(args.source)
@@ -195,6 +196,16 @@ def main():
                     cls_name = model.names[cls_id]
 
                     # Store the data into SQLite database
+                    # Store to SQLite  ← replaces the old comment
+                    # Save image first so we have the path ready
+                    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+                    filename = f"detections/smoker_{ts}_{frame_count}.jpg"
+                    cv2.imwrite(filename, annotated)
+                    insert_detection(
+                        confidence=conf,
+                        image_path=filename,
+                        class_name=cls_name,
+                    )
                     # You can use the 'sqlite3' library to connect and insert data into your database
 
                     print(f"[Frame {frame_count}] {cls_name} ({conf:.0%}) | {fps:.1f} FPS")
