@@ -11,20 +11,41 @@
 
 <body>
   <header class="header">
-    <div class="wrap">
-      <h1>Smoking Detection Dashboard</h1>
+    <div class="wrap headerRow">
+      <div class="brand">
+        <span class="dot"></span>
+        <h1>Smoking Detection</h1>
+      </div>
+      <div class="headerStats">
+        <div class="stat">
+          <span class="statLabel">Total</span>
+          <span class="statValue" id="statTotal">–</span>
+        </div>
+        <div class="stat">
+          <span class="statLabel">Latest</span>
+          <span class="statValue" id="statLatest">–</span>
+        </div>
+        <div class="stat liveStat" id="liveIndicator">
+          <span class="statLabel">Status</span>
+          <span class="statValue"><span class="liveDot"></span><span id="liveText">Live</span></span>
+        </div>
+      </div>
     </div>
   </header>
 
-  <main class="wrap">
-    <section class="card">
-      <h2>Detections</h2>
+  <main class="wrap layout">
+    <!-- LEFT: filters + table -->
+    <section class="card tableCard">
+      <div class="cardHead">
+        <h2>Detections</h2>
+        <span class="updated" id="lastUpdated"></span>
+      </div>
 
       <div class="controls">
         <div>
           <label>Class</label>
           <select id="className">
-            <option value="">All</option>
+            <option value="">All classes</option>
             <option value="smoking">smoking</option>
             <option value="Person">Person</option>
             <option value="Cigarette">Cigarette</option>
@@ -49,8 +70,8 @@
         </div>
 
         <div class="btnRow">
-          <button id="apply">Apply</button>
-          <button id="toggleRefresh">Pause</button>
+          <button id="apply" class="primary">Apply</button>
+          <button id="toggleRefresh" class="ghost">Pause</button>
         </div>
       </div>
 
@@ -60,26 +81,34 @@
             <tr>
               <th>ID</th>
               <th>Time</th>
-              <th class="right">Confidence</th>
+              <th>Class</th>
+              <th>Confidence</th>
               <th class="right">Temp</th>
               <th>Location</th>
             </tr>
           </thead>
           <tbody id="tbody">
-            <tr><td colspan="5" class="muted">Loading…</td></tr>
+            <tr><td colspan="6" class="muted">Loading…</td></tr>
           </tbody>
         </table>
       </div>
+    </section>
 
-      <!-- Big image box only (no "Preview" title, no helper text) -->
-      <div class="imageBox">
-        <a id="openImage" href="#" target="_blank" class="openLink" style="display:none;">Open image</a>
-        <div class="imageWrap">
-          <img id="previewImg" alt="Detection image" />
+    <!-- RIGHT: sticky preview -->
+    <aside class="card previewCard">
+      <div class="cardHead">
+        <h2>Preview</h2>
+        <a id="openImage" href="#" target="_blank" class="openLink" style="display:none;">Open ↗</a>
+      </div>
+      <div class="imageWrap">
+        <img id="previewImg" alt="Detection image" />
+        <div id="emptyState" class="emptyState">
+          <div class="emptyIcon">📷</div>
+          <div class="emptyText">Select a row to preview</div>
         </div>
       </div>
-
-    </section>
+      <div class="previewMeta" id="previewMeta"></div>
+    </aside>
   </main>
 </body>
 </html>
